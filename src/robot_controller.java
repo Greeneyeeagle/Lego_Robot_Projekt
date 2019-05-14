@@ -9,6 +9,8 @@ public class robot_controller {
 		//Fahren
 
 		r2d2.followblack();
+		Helfer.delayProgramm(2);
+		r2d2.lichtsensorZählen();
 		
 	}
 }

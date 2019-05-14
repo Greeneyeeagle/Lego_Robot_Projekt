@@ -59,12 +59,14 @@ public class AutonomerTWR extends TwoWheelRobot{
 			
 			while(lightS.sampleLight()<=90){
 				
-				if(lightS.sampleLight()<=35){
+				if(lightS.sampleLight()<=40){
 					fahren(0.0001, 0.5, 0.5);
 					
-				}else if (lightS.sampleLight()>=35){ 
+				}else if (lightS.sampleLight()>=40){ 
 					searchblack();
-					
+				}else if(lightS.sampleLight()>=90){
+					Helfer.delayProgramm(2);
+					break;
 				}
 			}
 		}
@@ -78,27 +80,38 @@ public class AutonomerTWR extends TwoWheelRobot{
 			winkelsearch("rechts", suchwinkel, 0.3);
 				if(lightS.sampleLight()<=35){
 					break;
+				}else if(lightS.sampleLight()>=95){
+					break;
 				}
 			winkelsearch("rechts", suchwinkel, -0.3);
 			if(lightS.sampleLight()<=35){
+				break;
+			}else if(lightS.sampleLight()>=95){
 				break;
 			}
 			
 			winkelsearch("links", suchwinkel, 0.3);
 			if(lightS.sampleLight()<=35){
 				break;
+			}else if(lightS.sampleLight()>=95){
+				break;
 			}
 			winkelsearch("links", suchwinkel, -0.3);
 			if(lightS.sampleLight()<=35){
 				break;
+			}else if(lightS.sampleLight()>=95){
+				break;
 			}
 			
-				if (suchwinkel <= 100){
-					suchwinkel += 10;
+				if(lightS.sampleLight()<=95){
+					if (suchwinkel <= 100){
+						suchwinkel += 10;
+					}else{
+						suchwinkel = suchwinkel - 20;
+					}
 				}else{
-					suchwinkel = suchwinkel - 20;
+					break;
 				}
-				
 			}
 				
 			
@@ -118,11 +131,11 @@ public class AutonomerTWR extends TwoWheelRobot{
 						
 						if(richtung.equals("rechts")){
 							rechts(streckenteil, speed);
-								if(lightS.sampleLight()<=35)
+								if(lightS.sampleLight()<=40)
 									break;
 							}else if(richtung.equals("links")){
 								links(streckenteil, speed);
-								if(lightS.sampleLight()<=35)
+								if(lightS.sampleLight()<=40)
 									break;
 							}else{
 								continue;
@@ -130,7 +143,34 @@ public class AutonomerTWR extends TwoWheelRobot{
 						}	
 					}
 				}
+		//Lichtsensor Schwarz zählen
 		
+		public void lichtsensorZählen(){
+			int zählen = 0;	
+				
+			int i = 0;
+			
+			do{
+				motB.start(this.speed);
+				motC.start(this.speed);
+				if(lightS.sampleLight()<=35){
+					zählen++;
+					i = 0;
+					System.out.println(zählen);
+					while(lightS.sampleLight()<=35){
+						Helfer.delayProgramm(0.001);
+					}
+				}else{
+					i++;
+				}
+			}while(i<=1500);
+			
+			motB.stop();
+			motC.stop();
+				
+			System.out.println(zählen);
+			Helfer.delayProgramm(10);
+		}
 }
 
 
